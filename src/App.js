@@ -1,23 +1,87 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import axios from 'axios';
+import './styles.scss';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
+  const [inputValue, setInputValue] = useState("");
+  const [movieTitle, setMovieTitle] = useState("");
+  const [moviePlot, setMoviePlot] = useState("");
+  const [movieActors, setMovieActors] = useState("");
+  const [movieRating, setMovieRating] = useState(0);
+  const [moviePoster, setMoviePoster] = useState(null);
+
+  const handleResetButtonClick = () => {
+    setInputValue("");
+    setMovieTitle("")
+    setMoviePlot("")
+    setMovieActors("")
+    setMovieRating(0)
+    setMoviePoster(null)
+  };
+
+  const handleSearchButtonClick = async () => {
+    const response = await axios.get(`http://www.omdbapi.com/?apikey=696b900d&t=${inputValue}`);
+    try {
+      setMovieTitle(response.data.Title)
+      setMoviePlot(response.data.Plot)
+      setMovieActors(response.data.Actors)
+      setMovieRating(response.data.Ratings[0].Value)
+      setMoviePoster(response.data.Poster)
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const movieContent = () => {
+    return (
+      <div className="container mt-5">
+        <div className="row">
+          <div className="col-md-6">
+            <div className='d-flex flex-column justify-content-start align-items-start'>
+              <h3>{movieTitle}</h3>
+              <p className='movie__plot'>{moviePlot}</p>
+              <p>
+                <strong>Actors: </strong>
+                {movieActors}
+              </p>
+              <p>
+                <strong>Rating: </strong> 
+                {movieRating}
+              </p>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <img src={moviePoster} alt="Image" className="img-fluid" />
+          </div>
+        </div>
+      </div>
+    )
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container text-center movie__container">
+      <h1>Welcome to Movie Finder</h1>
+      <h5>Your Personal Movie Library</h5>
+      <div className="row align-items-center justify-content-center">
+        <div className="col-auto">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search movies..."
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+          />        
+          </div>
+        <div className="col-auto">
+          <button className="btn btn-primary button__search " type="button" disabled={!inputValue && true} onClick={handleSearchButtonClick}>Search</button>
+          <button className="btn btn-primary" onClick={handleResetButtonClick} type="button">Reset</button>
+        </div>
+      </div>
+
+      {movieTitle && movieContent() }
+
     </div>
   );
 }

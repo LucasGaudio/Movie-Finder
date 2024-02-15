@@ -1,0 +1,13 @@
+.movie {
+    &__container {
+        margin: 20px 0;
+    }
+    
+    &__plot {
+        text-align: left;
+    }
+}
+
+.button__search {
+    margin-right: 20px;
+}
