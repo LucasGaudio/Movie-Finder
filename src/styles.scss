@@ -1,13 +1,38 @@
+$primary-color: #007bff;
+$dark-background-color: #282b2e;
+
+body {
+    background-color: $dark-background-color !important;
+}
 .movie {
     &__container {
         margin: 20px 0;
+        color: white; // Text color
     }
     
     &__plot {
         text-align: left;
     }
+
+    &__title {
+        color: $primary-color;
+        font-weight: 700;
+    }
+
+    &__poster {
+        border-radius: 5px;
+        box-shadow: 10px;
+    }
+
+    &__error {
+        margin-top: 20px;
+    }
 }
 
 .button__search {
     margin-right: 20px;
+}
+
+.page__subtitle {
+    margin-bottom: 20px;
 }
