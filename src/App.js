@@ -29,8 +29,8 @@ function App() {
   };
 
   const handleSearchButtonClick = async () => {
-    const response = await axios.get(`http://www.omdbapi.com/?apikey=${apikey}&t=${inputValue}`);
-    
+    const response = await axios.get(`https://www.omdbapi.com/?apikey=${apikey}&t=${inputValue}`);
+
     try {
       setMovieTitle(response.data.Title)
       setMoviePlot(response.data.Plot)
